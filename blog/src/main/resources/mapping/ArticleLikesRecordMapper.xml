@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xzy.dsvshx.blog.mapper.ArticleLikesRecordMapper" >
+  <resultMap id="BaseResultMap" type="xzy.dsvshx.blog.model.ArticleLikesRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="articleId" property="articleid" jdbcType="BIGINT" />
+    <result column="likerId" property="likerid" jdbcType="INTEGER" />
+    <result column="likeDate" property="likedate" jdbcType="VARCHAR" />
+    <result column="isRead" property="isread" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, articleId, likerId, likeDate, isRead
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from article_likes_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from article_likes_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="xzy.dsvshx.blog.model.ArticleLikesRecord" >
+    insert into article_likes_record (id, articleId, likerId, 
+      likeDate, isRead)
+    values (#{id,jdbcType=INTEGER}, #{articleid,jdbcType=BIGINT}, #{likerid,jdbcType=INTEGER}, 
+      #{likedate,jdbcType=VARCHAR}, #{isread,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="xzy.dsvshx.blog.model.ArticleLikesRecord" >
+    insert into article_likes_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="articleid != null" >
+        articleId,
+      </if>
+      <if test="likerid != null" >
+        likerId,
+      </if>
+      <if test="likedate != null" >
+        likeDate,
+      </if>
+      <if test="isread != null" >
+        isRead,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="articleid != null" >
+        #{articleid,jdbcType=BIGINT},
+      </if>
+      <if test="likerid != null" >
+        #{likerid,jdbcType=INTEGER},
+      </if>
+      <if test="likedate != null" >
+        #{likedate,jdbcType=VARCHAR},
+      </if>
+      <if test="isread != null" >
+        #{isread,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="xzy.dsvshx.blog.model.ArticleLikesRecord" >
+    update article_likes_record
+    <set >
+      <if test="articleid != null" >
+        articleId = #{articleid,jdbcType=BIGINT},
+      </if>
+      <if test="likerid != null" >
+        likerId = #{likerid,jdbcType=INTEGER},
+      </if>
+      <if test="likedate != null" >
+        likeDate = #{likedate,jdbcType=VARCHAR},
+      </if>
+      <if test="isread != null" >
+        isRead = #{isread,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xzy.dsvshx.blog.model.ArticleLikesRecord" >
+    update article_likes_record
+    set articleId = #{articleid,jdbcType=BIGINT},
+      likerId = #{likerid,jdbcType=INTEGER},
+      likeDate = #{likedate,jdbcType=VARCHAR},
+      isRead = #{isread,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xzy.dsvshx.blog.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="xzy.dsvshx.blog.model.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="trueName" property="truename" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="personalBrief" property="personalbrief" jdbcType="VARCHAR" />
+    <result column="recentlyLanded" property="recentlylanded" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="xzy.dsvshx.blog.model.User" extends="BaseResultMap" >
+    <result column="avatarImgUrl" property="avatarimgurl" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, username, password, gender, trueName, birthday, email, personalBrief, 
+    recentlyLanded
+  </sql>
+  <sql id="Blob_Column_List" >
+    avatarImgUrl
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="xzy.dsvshx.blog.model.User" >
+    insert into user (id, phone, username, 
+      password, gender, trueName, 
+      birthday, email, personalBrief, 
+      recentlyLanded, avatarImgUrl)
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{truename,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{personalbrief,jdbcType=VARCHAR}, 
+      #{recentlylanded,jdbcType=VARCHAR}, #{avatarimgurl,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="xzy.dsvshx.blog.model.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="truename != null" >
+        trueName,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="personalbrief != null" >
+        personalBrief,
+      </if>
+      <if test="recentlylanded != null" >
+        recentlyLanded,
+      </if>
+      <if test="avatarimgurl != null" >
+        avatarImgUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="truename != null" >
+        #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="personalbrief != null" >
+        #{personalbrief,jdbcType=VARCHAR},
+      </if>
+      <if test="recentlylanded != null" >
+        #{recentlylanded,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarimgurl != null" >
+        #{avatarimgurl,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="xzy.dsvshx.blog.model.User" >
+    update user
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="truename != null" >
+        trueName = #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="personalbrief != null" >
+        personalBrief = #{personalbrief,jdbcType=VARCHAR},
+      </if>
+      <if test="recentlylanded != null" >
+        recentlyLanded = #{recentlylanded,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarimgurl != null" >
+        avatarImgUrl = #{avatarimgurl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xzy.dsvshx.blog.model.User" >
+    update user
+    set phone = #{phone,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      trueName = #{truename,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      personalBrief = #{personalbrief,jdbcType=VARCHAR},
+      recentlyLanded = #{recentlylanded,jdbcType=VARCHAR},
+      avatarImgUrl = #{avatarimgurl,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xzy.dsvshx.blog.model.User" >
+    update user
+    set phone = #{phone,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      trueName = #{truename,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      personalBrief = #{personalbrief,jdbcType=VARCHAR},
+      recentlyLanded = #{recentlylanded,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
