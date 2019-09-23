@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="xzy.dsvshx.blog.mapper.PrivatewordMapper" >
-  <resultMap id="BaseResultMap" type="xzy.dsvshx.blog.model.Privateword" >
+<mapper namespace="xyz.dsvshx.blog.mapper.PrivatewordMapper" >
+  <resultMap id="BaseResultMap" type="xyz.dsvshx.blog.entity.Privateword" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="privateWord" property="privateword" jdbcType="VARCHAR" />
     <result column="publisherId" property="publisherid" jdbcType="VARCHAR" />
@@ -9,9 +9,82 @@
     <result column="replyContent" property="replycontent" jdbcType="VARCHAR" />
     <result column="publisherDate" property="publisherdate" jdbcType="VARCHAR" />
   </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List" >
     id, privateWord, publisherId, replierId, replyContent, publisherDate
   </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="xyz.dsvshx.blog.entity.PrivatewordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from privateword
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -22,7 +95,13 @@
     delete from privateword
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="xzy.dsvshx.blog.model.Privateword" >
+  <delete id="deleteByExample" parameterType="xyz.dsvshx.blog.entity.PrivatewordExample" >
+    delete from privateword
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="xyz.dsvshx.blog.entity.Privateword" >
     insert into privateword (id, privateWord, publisherId, 
       replierId, replyContent, publisherDate
       )
@@ -30,7 +109,7 @@
       #{replierid,jdbcType=VARCHAR}, #{replycontent,jdbcType=VARCHAR}, #{publisherdate,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="xzy.dsvshx.blog.model.Privateword" >
+  <insert id="insertSelective" parameterType="xyz.dsvshx.blog.entity.Privateword" >
     insert into privateword
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -73,7 +152,51 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="xzy.dsvshx.blog.model.Privateword" >
+  <select id="countByExample" parameterType="xyz.dsvshx.blog.entity.PrivatewordExample" resultType="java.lang.Integer" >
+    select count(*) from privateword
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update privateword
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.privateword != null" >
+        privateWord = #{record.privateword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publisherid != null" >
+        publisherId = #{record.publisherid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replierid != null" >
+        replierId = #{record.replierid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replycontent != null" >
+        replyContent = #{record.replycontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publisherdate != null" >
+        publisherDate = #{record.publisherdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update privateword
+    set id = #{record.id,jdbcType=INTEGER},
+      privateWord = #{record.privateword,jdbcType=VARCHAR},
+      publisherId = #{record.publisherid,jdbcType=VARCHAR},
+      replierId = #{record.replierid,jdbcType=VARCHAR},
+      replyContent = #{record.replycontent,jdbcType=VARCHAR},
+      publisherDate = #{record.publisherdate,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.dsvshx.blog.entity.Privateword" >
     update privateword
     <set >
       <if test="privateword != null" >
@@ -94,7 +217,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="xzy.dsvshx.blog.model.Privateword" >
+  <update id="updateByPrimaryKey" parameterType="xyz.dsvshx.blog.entity.Privateword" >
     update privateword
     set privateWord = #{privateword,jdbcType=VARCHAR},
       publisherId = #{publisherid,jdbcType=VARCHAR},

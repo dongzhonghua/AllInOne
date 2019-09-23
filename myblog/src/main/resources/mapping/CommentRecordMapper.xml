@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="xzy.dsvshx.blog.mapper.CommentRecordMapper" >
-  <resultMap id="BaseResultMap" type="xzy.dsvshx.blog.model.CommentRecord" >
+<mapper namespace="xyz.dsvshx.blog.mapper.CommentRecordMapper" >
+  <resultMap id="BaseResultMap" type="xyz.dsvshx.blog.entity.CommentRecord" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="pId" property="pid" jdbcType="BIGINT" />
     <result column="articleId" property="articleid" jdbcType="BIGINT" />
@@ -11,15 +11,105 @@
     <result column="likes" property="likes" jdbcType="INTEGER" />
     <result column="isRead" property="isread" jdbcType="BIT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="xzy.dsvshx.blog.model.CommentRecord" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="xyz.dsvshx.blog.entity.CommentRecord" extends="BaseResultMap" >
     <result column="commentContent" property="commentcontent" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List" >
     id, pId, articleId, answererId, respondentId, commentDate, likes, isRead
   </sql>
   <sql id="Blob_Column_List" >
     commentContent
   </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="xyz.dsvshx.blog.entity.CommentRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comment_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="xyz.dsvshx.blog.entity.CommentRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from comment_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -32,7 +122,13 @@
     delete from comment_record
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="xzy.dsvshx.blog.model.CommentRecord" >
+  <delete id="deleteByExample" parameterType="xyz.dsvshx.blog.entity.CommentRecordExample" >
+    delete from comment_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="xyz.dsvshx.blog.entity.CommentRecord" >
     insert into comment_record (id, pId, articleId, 
       answererId, respondentId, commentDate, 
       likes, isRead, commentContent
@@ -42,7 +138,7 @@
       #{likes,jdbcType=INTEGER}, #{isread,jdbcType=BIT}, #{commentcontent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="xzy.dsvshx.blog.model.CommentRecord" >
+  <insert id="insertSelective" parameterType="xyz.dsvshx.blog.entity.CommentRecord" >
     insert into comment_record
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -103,7 +199,77 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="xzy.dsvshx.blog.model.CommentRecord" >
+  <select id="countByExample" parameterType="xyz.dsvshx.blog.entity.CommentRecordExample" resultType="java.lang.Integer" >
+    select count(*) from comment_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update comment_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.pid != null" >
+        pId = #{record.pid,jdbcType=BIGINT},
+      </if>
+      <if test="record.articleid != null" >
+        articleId = #{record.articleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.answererid != null" >
+        answererId = #{record.answererid,jdbcType=INTEGER},
+      </if>
+      <if test="record.respondentid != null" >
+        respondentId = #{record.respondentid,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentdate != null" >
+        commentDate = #{record.commentdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.likes != null" >
+        likes = #{record.likes,jdbcType=INTEGER},
+      </if>
+      <if test="record.isread != null" >
+        isRead = #{record.isread,jdbcType=BIT},
+      </if>
+      <if test="record.commentcontent != null" >
+        commentContent = #{record.commentcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update comment_record
+    set id = #{record.id,jdbcType=BIGINT},
+      pId = #{record.pid,jdbcType=BIGINT},
+      articleId = #{record.articleid,jdbcType=BIGINT},
+      answererId = #{record.answererid,jdbcType=INTEGER},
+      respondentId = #{record.respondentid,jdbcType=INTEGER},
+      commentDate = #{record.commentdate,jdbcType=VARCHAR},
+      likes = #{record.likes,jdbcType=INTEGER},
+      isRead = #{record.isread,jdbcType=BIT},
+      commentContent = #{record.commentcontent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update comment_record
+    set id = #{record.id,jdbcType=BIGINT},
+      pId = #{record.pid,jdbcType=BIGINT},
+      articleId = #{record.articleid,jdbcType=BIGINT},
+      answererId = #{record.answererid,jdbcType=INTEGER},
+      respondentId = #{record.respondentid,jdbcType=INTEGER},
+      commentDate = #{record.commentdate,jdbcType=VARCHAR},
+      likes = #{record.likes,jdbcType=INTEGER},
+      isRead = #{record.isread,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.dsvshx.blog.entity.CommentRecord" >
     update comment_record
     <set >
       <if test="pid != null" >
@@ -133,7 +299,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xzy.dsvshx.blog.model.CommentRecord" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xyz.dsvshx.blog.entity.CommentRecord" >
     update comment_record
     set pId = #{pid,jdbcType=BIGINT},
       articleId = #{articleid,jdbcType=BIGINT},
@@ -145,7 +311,7 @@
       commentContent = #{commentcontent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="xzy.dsvshx.blog.model.CommentRecord" >
+  <update id="updateByPrimaryKey" parameterType="xyz.dsvshx.blog.entity.CommentRecord" >
     update comment_record
     set pId = #{pid,jdbcType=BIGINT},
       articleId = #{articleid,jdbcType=BIGINT},

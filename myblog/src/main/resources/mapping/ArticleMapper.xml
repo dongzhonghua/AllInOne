@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="xzy.dsvshx.blog.mapper.ArticleMapper" >
-  <resultMap id="BaseResultMap" type="xzy.dsvshx.blog.model.Article" >
+<mapper namespace="xyz.dsvshx.blog.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="xyz.dsvshx.blog.entity.Article" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="articleId" property="articleid" jdbcType="BIGINT" />
     <result column="author" property="author" jdbcType="VARCHAR" />
@@ -17,10 +17,68 @@
     <result column="lastArticleId" property="lastarticleid" jdbcType="BIGINT" />
     <result column="nextArticleId" property="nextarticleid" jdbcType="BIGINT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="xzy.dsvshx.blog.model.ArticleWithBLOBs" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="xyz.dsvshx.blog.entity.ArticleWithBLOBs" extends="BaseResultMap" >
     <result column="articleContent" property="articlecontent" jdbcType="LONGVARCHAR" />
     <result column="articleTabloid" property="articletabloid" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List" >
     id, articleId, author, originalAuthor, articleTitle, articleTags, articleType, articleCategories, 
     publishDate, updateDate, articleUrl, likes, lastArticleId, nextArticleId
@@ -28,6 +86,38 @@
   <sql id="Blob_Column_List" >
     articleContent, articleTabloid
   </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="xyz.dsvshx.blog.entity.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="xyz.dsvshx.blog.entity.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -40,7 +130,13 @@
     delete from article
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="xzy.dsvshx.blog.model.ArticleWithBLOBs" >
+  <delete id="deleteByExample" parameterType="xyz.dsvshx.blog.entity.ArticleExample" >
+    delete from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="xyz.dsvshx.blog.entity.ArticleWithBLOBs" >
     insert into article (id, articleId, author, 
       originalAuthor, articleTitle, articleTags, 
       articleType, articleCategories, publishDate, 
@@ -54,7 +150,7 @@
       #{lastarticleid,jdbcType=BIGINT}, #{nextarticleid,jdbcType=BIGINT}, #{articlecontent,jdbcType=LONGVARCHAR}, 
       #{articletabloid,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="xzy.dsvshx.blog.model.ArticleWithBLOBs" >
+  <insert id="insertSelective" parameterType="xyz.dsvshx.blog.entity.ArticleWithBLOBs" >
     insert into article
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -157,7 +253,111 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="xzy.dsvshx.blog.model.ArticleWithBLOBs" >
+  <select id="countByExample" parameterType="xyz.dsvshx.blog.entity.ArticleExample" resultType="java.lang.Integer" >
+    select count(*) from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update article
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.articleid != null" >
+        articleId = #{record.articleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.originalauthor != null" >
+        originalAuthor = #{record.originalauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articletitle != null" >
+        articleTitle = #{record.articletitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articletags != null" >
+        articleTags = #{record.articletags,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articletype != null" >
+        articleType = #{record.articletype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articlecategories != null" >
+        articleCategories = #{record.articlecategories,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publishdate != null" >
+        publishDate = #{record.publishdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatedate != null" >
+        updateDate = #{record.updatedate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articleurl != null" >
+        articleUrl = #{record.articleurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.likes != null" >
+        likes = #{record.likes,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastarticleid != null" >
+        lastArticleId = #{record.lastarticleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.nextarticleid != null" >
+        nextArticleId = #{record.nextarticleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.articlecontent != null" >
+        articleContent = #{record.articlecontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.articletabloid != null" >
+        articleTabloid = #{record.articletabloid,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=INTEGER},
+      articleId = #{record.articleid,jdbcType=BIGINT},
+      author = #{record.author,jdbcType=VARCHAR},
+      originalAuthor = #{record.originalauthor,jdbcType=VARCHAR},
+      articleTitle = #{record.articletitle,jdbcType=VARCHAR},
+      articleTags = #{record.articletags,jdbcType=VARCHAR},
+      articleType = #{record.articletype,jdbcType=VARCHAR},
+      articleCategories = #{record.articlecategories,jdbcType=VARCHAR},
+      publishDate = #{record.publishdate,jdbcType=VARCHAR},
+      updateDate = #{record.updatedate,jdbcType=VARCHAR},
+      articleUrl = #{record.articleurl,jdbcType=VARCHAR},
+      likes = #{record.likes,jdbcType=INTEGER},
+      lastArticleId = #{record.lastarticleid,jdbcType=BIGINT},
+      nextArticleId = #{record.nextarticleid,jdbcType=BIGINT},
+      articleContent = #{record.articlecontent,jdbcType=LONGVARCHAR},
+      articleTabloid = #{record.articletabloid,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update article
+    set id = #{record.id,jdbcType=INTEGER},
+      articleId = #{record.articleid,jdbcType=BIGINT},
+      author = #{record.author,jdbcType=VARCHAR},
+      originalAuthor = #{record.originalauthor,jdbcType=VARCHAR},
+      articleTitle = #{record.articletitle,jdbcType=VARCHAR},
+      articleTags = #{record.articletags,jdbcType=VARCHAR},
+      articleType = #{record.articletype,jdbcType=VARCHAR},
+      articleCategories = #{record.articlecategories,jdbcType=VARCHAR},
+      publishDate = #{record.publishdate,jdbcType=VARCHAR},
+      updateDate = #{record.updatedate,jdbcType=VARCHAR},
+      articleUrl = #{record.articleurl,jdbcType=VARCHAR},
+      likes = #{record.likes,jdbcType=INTEGER},
+      lastArticleId = #{record.lastarticleid,jdbcType=BIGINT},
+      nextArticleId = #{record.nextarticleid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.dsvshx.blog.entity.ArticleWithBLOBs" >
     update article
     <set >
       <if test="articleid != null" >
@@ -208,7 +408,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xzy.dsvshx.blog.model.ArticleWithBLOBs" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xyz.dsvshx.blog.entity.ArticleWithBLOBs" >
     update article
     set articleId = #{articleid,jdbcType=BIGINT},
       author = #{author,jdbcType=VARCHAR},
@@ -227,7 +427,7 @@
       articleTabloid = #{articletabloid,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="xzy.dsvshx.blog.model.Article" >
+  <update id="updateByPrimaryKey" parameterType="xyz.dsvshx.blog.entity.Article" >
     update article
     set articleId = #{articleid,jdbcType=BIGINT},
       author = #{author,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="xzy.dsvshx.blog.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="xzy.dsvshx.blog.model.User" >
+<mapper namespace="xyz.dsvshx.blog.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="xyz.dsvshx.blog.entity.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
@@ -13,9 +13,67 @@
     <result column="personalBrief" property="personalbrief" jdbcType="VARCHAR" />
     <result column="recentlyLanded" property="recentlylanded" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="xzy.dsvshx.blog.model.User" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="xyz.dsvshx.blog.entity.User" extends="BaseResultMap" >
     <result column="avatarImgUrl" property="avatarimgurl" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List" >
     id, phone, username, password, gender, trueName, birthday, email, personalBrief, 
     recentlyLanded
@@ -23,6 +81,38 @@
   <sql id="Blob_Column_List" >
     avatarImgUrl
   </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="xyz.dsvshx.blog.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="xyz.dsvshx.blog.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -35,7 +125,13 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="xzy.dsvshx.blog.model.User" >
+  <delete id="deleteByExample" parameterType="xyz.dsvshx.blog.entity.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="xyz.dsvshx.blog.entity.User" >
     insert into user (id, phone, username, 
       password, gender, trueName, 
       birthday, email, personalBrief, 
@@ -45,7 +141,7 @@
       #{birthday,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{personalbrief,jdbcType=VARCHAR}, 
       #{recentlylanded,jdbcType=VARCHAR}, #{avatarimgurl,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="xzy.dsvshx.blog.model.User" >
+  <insert id="insertSelective" parameterType="xyz.dsvshx.blog.entity.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -118,7 +214,87 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="xzy.dsvshx.blog.model.User" >
+  <select id="countByExample" parameterType="xyz.dsvshx.blog.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=CHAR},
+      </if>
+      <if test="record.truename != null" >
+        trueName = #{record.truename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.personalbrief != null" >
+        personalBrief = #{record.personalbrief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recentlylanded != null" >
+        recentlyLanded = #{record.recentlylanded,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatarimgurl != null" >
+        avatarImgUrl = #{record.avatarimgurl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update user
+    set id = #{record.id,jdbcType=INTEGER},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=CHAR},
+      trueName = #{record.truename,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      personalBrief = #{record.personalbrief,jdbcType=VARCHAR},
+      recentlyLanded = #{record.recentlylanded,jdbcType=VARCHAR},
+      avatarImgUrl = #{record.avatarimgurl,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set id = #{record.id,jdbcType=INTEGER},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=CHAR},
+      trueName = #{record.truename,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      personalBrief = #{record.personalbrief,jdbcType=VARCHAR},
+      recentlyLanded = #{record.recentlylanded,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xyz.dsvshx.blog.entity.User" >
     update user
     <set >
       <if test="phone != null" >
@@ -154,7 +330,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xzy.dsvshx.blog.model.User" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xyz.dsvshx.blog.entity.User" >
     update user
     set phone = #{phone,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
@@ -168,7 +344,7 @@
       avatarImgUrl = #{avatarimgurl,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="xzy.dsvshx.blog.model.User" >
+  <update id="updateByPrimaryKey" parameterType="xyz.dsvshx.blog.entity.User" >
     update user
     set phone = #{phone,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
