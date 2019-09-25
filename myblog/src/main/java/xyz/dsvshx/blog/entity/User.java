@@ -1,5 +1,10 @@
 package xyz.dsvshx.blog.entity;
 
+import lombok.Data;
+
+import java.util.List;
+
+@Data
 public class User {
     private Integer id;
 
@@ -22,6 +27,11 @@ public class User {
     private String recentlylanded;
 
     private String avatarimgurl;
+
+    private List<Role> roles;
+
+
+
 
     public Integer getId() {
         return id;

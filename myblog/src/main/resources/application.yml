@@ -3,7 +3,7 @@ server:
 
 spring:
     redis:
-        timeout: 100ms
+        timeout: 1000ms
         database: 1
         host: 47.94.229.159
         password: redis123
@@ -47,7 +47,11 @@ spring:
             enabled: false
     thymeleaf:
         cache: false
-        mode: LEGACYHTML5
+        mode: HTML5
+        prefix: classpath:/templates/
+        suffix: .html
+        encoding: UTF-8
+
 
     freemarker:
         cache: false
