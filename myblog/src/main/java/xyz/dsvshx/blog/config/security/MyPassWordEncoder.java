@@ -1,4 +1,4 @@
-package xyz.dsvshx.blog.config;
+package xyz.dsvshx.blog.config.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import xyz.dsvshx.blog.utils.MD5Util;

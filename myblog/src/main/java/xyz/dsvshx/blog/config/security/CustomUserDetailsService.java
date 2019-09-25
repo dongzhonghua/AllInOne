@@ -1,4 +1,4 @@
-package xyz.dsvshx.blog.config;
+package xyz.dsvshx.blog.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,9 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import xyz.dsvshx.blog.entity.Role;
-import xyz.dsvshx.blog.entity.SecurityUser;
 import xyz.dsvshx.blog.entity.User;
-import xyz.dsvshx.blog.mapper.SecurityUserMapper;
 import xyz.dsvshx.blog.mapper.UserMapper;
 import xyz.dsvshx.blog.service.UserService;
 
@@ -22,15 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
 
-        User user = userMapper.getUsernameAndRolesByPhone(s);
+        User user = userMapper.getUsernameAndRolesByPhone(phone);
         if (user == null){
             throw new UsernameNotFoundException("用户不存在");
 
         }
-        //更新用户登录时间
-
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 

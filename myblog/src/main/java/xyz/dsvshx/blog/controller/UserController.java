@@ -6,9 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.dsvshx.blog.entity.SecurityUser;
 import xyz.dsvshx.blog.entity.User;
-import xyz.dsvshx.blog.mapper.SecurityUserMapper;
 import xyz.dsvshx.blog.mapper.UserMapper;
 import xyz.dsvshx.blog.service.UserService;
 
