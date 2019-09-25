@@ -1,5 +1,5 @@
 server:
-    port: 8081
+    port: 8080
 
 spring:
     redis:
@@ -71,3 +71,10 @@ pagehelper:
 
 #debug: true
 
+# oss
+oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    keyid: LTAI4FjACkPyL82MPkFpxagu
+    keysecret: LDqgwj1fXJlN8slwlHVdM7DEMkHK6d
+    bucketname: dsvshx
+    filehost: file

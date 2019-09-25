@@ -9,6 +9,7 @@ import xyz.dsvshx.blog.entity.UserExample;
 
 public interface UserMapper {
 
+
     @Select("select * from user where phone=#{phone}")
     @Results({
             @Result(column = "username", property = "username"),
@@ -23,8 +24,12 @@ public interface UserMapper {
     @Select("select * from user where phone=#{phone}")
     User findUserByPhone(@Param("phone") String phone);
 
+    @Select("select * from user where username=#{username}")
+    User findUserByUserName(@Param("username") String username);
+
     @Select("select username from user where id=#{id}")
     String findUsernameById(int id);
+
     int countByExample(UserExample example);
 
     int deleteByExample(UserExample example);

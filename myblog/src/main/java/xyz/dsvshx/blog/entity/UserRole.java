@@ -5,6 +5,11 @@ public class UserRole {
 
     private Integer roleId;
 
+    public UserRole(int userId, int roleUser) {
+        this.roleId = roleUser;
+        this.userId = userId;
+    }
+
     public Integer getUserId() {
         return userId;
     }

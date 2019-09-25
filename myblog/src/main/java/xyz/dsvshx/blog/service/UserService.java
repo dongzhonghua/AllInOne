@@ -1,8 +1,19 @@
 package xyz.dsvshx.blog.service;
 
-import org.springframework.stereotype.Service;
+import com.alibaba.fastjson.JSONObject;
 import xyz.dsvshx.blog.entity.User;
+import xyz.dsvshx.blog.utils.Result;
 
 public interface UserService {
     User findUserByPhone(String phone);
+
+    int findIdByUsername(String username);
+
+    JSONObject getHeadPortraitUrl(int idByUsername);
+
+    Result getUserPersonalInfoByUsername(String username);
+
+    Result savePersonalDate(User user, String username);
+
+    String insert(User user);
 }
