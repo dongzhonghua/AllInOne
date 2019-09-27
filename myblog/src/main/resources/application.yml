@@ -60,6 +60,14 @@ spring:
             restart:
                 enabled: true
 
+    servlet:
+        multipart:
+            enabled: true
+            max-file-size: 104857600
+            max-request-size: 104857600
+
+
+
 mybatis:
     mapper-locations: classpath:mapping/*.xml
     type-aliases-package: xyz.dsvshx.blog.entity
@@ -68,13 +76,7 @@ pagehelper:
     reasonable: true
     support-methods-arguments: true
     params: count
-
+logging:
+    config: classpath:logback-spring.xml
+    path: C:\Users\dong0\Documents\java_practice\AAA\myblog\log
 #debug: true
-
-# oss
-oss:
-    endpoint: oss-cn-beijing.aliyuncs.com
-    keyid: LTAI4FjACkPyL82MPkFpxagu
-    keysecret: LDqgwj1fXJlN8slwlHVdM7DEMkHK6d
-    bucketname: dsvshx
-    filehost: file
