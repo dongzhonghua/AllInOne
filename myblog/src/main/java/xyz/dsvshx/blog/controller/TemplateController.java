@@ -21,4 +21,14 @@ public class TemplateController {
         return "fileUpload";
     }
 
+    @GetMapping("/video")
+    public String video(){
+        return "video";
+    }
+
+    @GetMapping("/editor")
+    public String editor(){
+        return "editor";
+    }
+
 }

@@ -2,11 +2,14 @@ package xyz.dsvshx.blog.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import xyz.dsvshx.blog.entity.Article;
 import xyz.dsvshx.blog.entity.ArticleExample;
 import xyz.dsvshx.blog.entity.ArticleWithBLOBs;
 
 public interface ArticleMapper {
+    @Update("update article set likes=likes+1 where articleId=#{articleId}")
+    void updateLikeByArticleId(@Param("articleId") long articleId);
     int countByExample(ArticleExample example);
 
     int deleteByExample(ArticleExample example);
