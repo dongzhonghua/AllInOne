@@ -1,15 +1,28 @@
 package xyz.dsvshx.blog.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.dsvshx.blog.entity.Article;
+import xyz.dsvshx.blog.entity.ArticleExample;
+import xyz.dsvshx.blog.entity.ArticleWithBLOBs;
 import xyz.dsvshx.blog.mapper.ArticleMapper;
 import xyz.dsvshx.blog.service.*;
 import xyz.dsvshx.blog.utils.Result;
+import xyz.dsvshx.blog.utils.ResultUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
@@ -46,7 +59,43 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Result findAllArticles(String rows, String pageNo) {
-        return null;
+        int pageNum = Integer.parseInt(pageNo);
+        int pageSize = Integer.parseInt(rows);
+        PageHelper.startPage(pageNum, pageSize);
+        ArticleExample articleExample = new ArticleExample();
+        articleExample.setOrderByClause("id desc");
+        ArticleExample.Criteria criteria = articleExample.createCriteria();
+        List<ArticleWithBLOBs> articles = articleMapper.selectByExampleWithBLOBs(articleExample);
+        PageInfo<ArticleWithBLOBs> pageInfo = new PageInfo<>(articles);
+        List<Map<String, Object>> newArticles = new ArrayList<>();
+        Map<String, Object> map;
+
+        for (ArticleWithBLOBs article : articles) {
+            map = new HashMap<>();
+            map.put("thisArticleUrl", "/article/" + article.getId());
+            map.put("articleTags", article.getArticletags());
+            map.put("articleTitle", article.getArticletitle());
+            map.put("articleType", article.getArticletype());
+            map.put("publishDate", article.getPublishdate());
+            map.put("originalAuthor", article.getOriginalauthor());
+            map.put("articleCategories", article.getArticlecategories());
+            map.put("articleTabloid", article.getArticletabloid());
+            map.put("likes", article.getLikes());
+            newArticles.add(map);
+        }
+        Map<String, Object> thisPageInfo = new HashMap<>();
+        thisPageInfo.put("pageNum", pageInfo.getPageNum());
+        thisPageInfo.put("pageSize", pageInfo.getPageSize());
+        thisPageInfo.put("total", pageInfo.getTotal());
+        thisPageInfo.put("pages", pageInfo.getPages());
+        thisPageInfo.put("isFirstPage", pageInfo.isIsFirstPage());
+        thisPageInfo.put("isLastPage", pageInfo.isIsLastPage());
+        thisPageInfo.put("navigatepageNums", pageInfo.getNavigatepageNums());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("articles",newArticles);
+        jsonObject.put("pageInfo",thisPageInfo);
+        return ResultUtil.success(jsonObject);
+
     }
 
     @Override

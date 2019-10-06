@@ -79,4 +79,6 @@ pagehelper:
 logging:
     config: classpath:logback-spring.xml
     path: C:\Users\dong0\Documents\java_practice\AAA\myblog\log
+#    level:
+#        xyz.dsvshx.blog.mapper: debug
 #debug: true

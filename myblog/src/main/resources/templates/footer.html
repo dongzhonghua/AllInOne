@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Title</title>
+    <!--<link href="/css/bootstrap.css" rel="stylesheet">-->
+    <!--<script src="/js/jquery-3.4.1.min.js"></script>-->
+    <!--<script src="/js/bootstrap.js"></script>-->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+</head>
+<body>
+<div th:fragment="footer">
+    <div class="container-fluid">
+        <!--避免内容被遮盖的现象-->
+        <nav class="navbar navbar-default"></nav>
+        <nav class="navbar navbar-fixed-bottom">
+            <div class="container-fluid">
+                董仲华的网站
+            </div>
+        </nav>
+
+
+    </div>
+</div>
+</body>
+</html>

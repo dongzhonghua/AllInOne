@@ -15,6 +15,7 @@
     <script src="/js/bootstrap.js"></script>
 </head>
 <body>
+<div th:fragment="header">
 <div class="container-fluid">
     <!--避免内容被遮盖的现象-->
     <nav class="navbar navbar-default"></nav>
@@ -74,50 +75,8 @@
         </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="row">
-        <!--left-->
-        <div class="col-md-2">
-        </div>
-        <!--middle-->
-        <div class="col-md-6">
 
-            <div id="articles">
-                <div class="article-content">
-
-                </div>
-
-            </div>
-            <div class="row ">
-                <div class="col-md-3 "style="margin-top: 25px;font-size: 14px" id="page-info-area">
-
-                </div>
-                <div class="col-md-6 " id="page-nav-area">
-
-                </div>
-            </div>
-
-        </div>
-        <!--right-->
-        <div class="col-md-2">
-            <div class="article-content">
-                <h3 class="text-left">Laravel 5.6 版本正式发布</h3>
-                <div class="second-div text-left">
-                    作者：&nbsp;<span class="author-name">王赛</span>&nbsp;&nbsp;2019年3月8日
-                </div>
-                <div class="img-div">
-                </div>
-                <p>
-                    Laravel 5.6 是继5.5之后Laravel官方发布的最新版本，此版本包含众多新特性，接下来我们说一说几个重要特性，如需查看发布的需求日志，请<span
-                        class="light">点击这里</span>。
-                </p>
-                <button class="btn btn-light red-button font-color">阅读全文</button>
-                <hr/>
-            </div>
-
-        </div>
-
-    </div>
 </div>
-<script src="/js/index.js"></script>
+</div>
 </body>
 </html>

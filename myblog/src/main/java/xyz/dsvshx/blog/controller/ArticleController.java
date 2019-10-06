@@ -4,10 +4,8 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import xyz.dsvshx.blog.service.ArticleLikesRecordService;
 import xyz.dsvshx.blog.entity.Article;
 import xyz.dsvshx.blog.service.ArticleService;
@@ -16,6 +14,8 @@ import xyz.dsvshx.blog.utils.RedisOperator;
 import xyz.dsvshx.blog.utils.Result;
 import xyz.dsvshx.blog.utils.ResultUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @RestController
@@ -30,6 +30,15 @@ public class ArticleController {
     UserService userService;
     @Autowired
     RedisOperator redisOperator;
+
+    @GetMapping("/myArticles")
+    public Result myArticles(@RequestParam("rows") String rows,
+                             @RequestParam("pageNum") String pageNum) {
+
+        return articleService.findAllArticles(rows, pageNum);
+
+    }
+
 
     @PostMapping("/getArticleByArticleId")
     public Result getArticleByArticleId(@RequestParam("articleId") String articleId,
@@ -61,4 +70,6 @@ public class ArticleController {
         int likes = articleService.updateLikeByArticleId(Long.parseLong(articleId));
         return 0;
     }
+
+
 }
