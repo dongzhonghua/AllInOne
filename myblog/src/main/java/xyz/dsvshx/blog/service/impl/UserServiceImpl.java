@@ -120,6 +120,12 @@ public class UserServiceImpl implements UserService {
         return "2";
     }
 
+    @Override
+    public String findUsernameByid(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        return user.getUsername();
+    }
+
     private void insertRole(int userId, int roleUser) {
 
         userRoleMapper.insert(new UserRole(userId,roleUser));

@@ -16,4 +16,6 @@ public interface UserService {
     Result savePersonalDate(User user, String username);
 
     String insert(User user);
+
+    String findUsernameByid(Integer answererid);
 }

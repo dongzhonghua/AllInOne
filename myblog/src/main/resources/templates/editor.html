@@ -5,42 +5,86 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/editormd.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/js/editormd.js"></script>
+    <script src="/js/bootstrap.js"></script>
 
 </head>
 <body>
-<div id="editormd">
-    <textarea name="content"  style="display:none;"></textarea>
+<div class="app">
+    <nav class="navbar navbar-default"></nav>
+    <nav class="navbar  navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header ">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <!--<span class="sr-only">Toggle navigation</span>-->
+                    <!--<span class="icon-bar"></span>-->
+                    <!--<span class="icon-bar"></span>-->
+                    <!--<span class="icon-bar"></span>-->
+                </button>
+                <a class="navbar-brand" href="#">董仲华</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">首页 <span class="sr-only">(current)</span></a></li>
+                </ul>
+
+                <ul class="nav navbar-nav" style="margin-left: 700px;">
+                    <li><a href="#" style="font-weight: bold; font-size: 16px">创作快乐！</a> </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/editor">写博客</a></li>
+
+                    <div class="nav navbar-nav navbar-right" th:unless="${#httpServletRequest.remoteUser}">
+                        <li><a th:href="@{/login}">登录</a></li>
+                        <li><a th:href="@{/register}">注册</a></li>
+                    </div>
+                    <div class="nav navbar-nav navbar-right" th:if="${#httpServletRequest.remoteUser}">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">用户名 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="">个人主页</a></li>
+                                <li><a href="">消息</a></li>
+                                <li><a href="">反馈</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a th:href="@{/logout}">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </div>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+            <div class="row"></div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="article-title">
+            <div class="col-md-11">
+                <div class="input-group-lg">
+                    <input type="text" class="form-control" placeholder="请输入文章标题">
+
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+            <div class="col-md-1">
+                <span class="input-group-btn">
+                    <button class="btn btn-success btn-lg" type="button" id="issue-article">发布</button>
+                    </span>
+            </div>
+        </div>
+        <div id="editormd">
+            <textarea name="content" style="display:none;"></textarea>
+        </div>
+    </div>
 </div>
+<script src="/js/editor.js"></script>
+
 </body>
-<script type="text/javascript">
-    //    调用编辑器
-    var testEditor;
-    $(function() {
-        testEditor = editormd("editormd", {
-            width   : "90%",
-            height  : 768,
-            syncScrolling : true,
-            path    : "../plugin/editormd/lib/",
-            // previewTheme : "dark", //代码块使用dark主题
-            codeFold : true,
-            emoji:true,
-            tocm : true, // Using [TOCM]
-            tex : true, // 开启科学公式TeX语言支持，默认关闭
-            flowChart : true, // 开启流程图支持，默认关闭
-            sequenceDiagram : true, // 开启时序/序列图支持，默认关闭,
-            htmlDecode : true, //不过滤标签
-            imageUpload : true, //上传图片
-            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp","JPG","JPEG","GIF","PNG","BMP","WEBP"],
-            imageUploadURL : "/uploadImage",onload:function () {
-                // console.log('onload', this);
-            },
-            saveHTMLToTextarea: true, //注意3：这个配置，方便post提交表单
-            toolbarIcons : function () {
-                return ["bold","del","italic","quote","|","h1","h2","h3","h4","h5","h6","|","list-ul","list-ol","hr","|","link","image","code","code-block","table","datetime","html-entities","emoji","|","watch","preview","fullscreen","clear","search","|","help","info"]
-            }
-        });
-    });
-</script>
+
 </html>

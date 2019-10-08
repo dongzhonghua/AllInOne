@@ -1,5 +1,7 @@
 package xyz.dsvshx.blog.utils;
 
+import com.alibaba.fastjson.JSONArray;
+
 public class ResultUtil {
 
     public static Result success(String msg) {
@@ -35,6 +37,14 @@ public class ResultUtil {
         Result result = new Result();
         result.setCode(code);
         result.setMsg(msg);
+        return result;
+    }
+
+    public static Result error(int i, String s, Object object) {
+        Result result = new Result();
+        result.setCode(i);
+        result.setMsg(s);
+        result.setData(object);
         return result;
     }
 }

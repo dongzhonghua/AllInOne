@@ -1,9 +1,11 @@
 package xyz.dsvshx.blog.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +15,24 @@ public class RedisOperator {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    public void put(String key, Object value, Class<?> clazz) {
+        HashOperations<String, Object, Object> ho = redisTemplate.opsForHash();
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                ho.put(key, field.getName(), field.get(value));
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean haskey(String key) {
+        return redisTemplate.opsForHash().getOperations().hasKey(key);
+    }
 
     // Key（键），简单的key-value操作
 
@@ -79,8 +99,7 @@ public class RedisOperator {
      *
      * @param key
      * @param value
-     * @param timeout
-     *            （以秒为单位）
+     * @param timeout （以秒为单位）
      */
     public void set(String key, String value, long timeout) {
         redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
@@ -93,7 +112,7 @@ public class RedisOperator {
      * @return value
      */
     public String get(String key) {
-        return (String)redisTemplate.opsForValue().get(key);
+        return (String) redisTemplate.opsForValue().get(key);
     }
 
     // Hash（哈希表）
@@ -160,7 +179,7 @@ public class RedisOperator {
      * @return 列表key的头元素。
      */
     public String lpop(String key) {
-        return (String)redisTemplate.opsForList().leftPop(key);
+        return (String) redisTemplate.opsForList().leftPop(key);
     }
 
     /**

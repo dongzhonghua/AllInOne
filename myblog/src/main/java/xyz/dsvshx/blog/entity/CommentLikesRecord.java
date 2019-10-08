@@ -1,5 +1,10 @@
 package xyz.dsvshx.blog.entity;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class CommentLikesRecord {
     private Integer id;
 
@@ -10,6 +15,14 @@ public class CommentLikesRecord {
     private Integer likerid;
 
     private String likedate;
+
+    public CommentLikesRecord(Long articleid, Integer pid, Integer likerid, String likedate) {
+        this.articleid = articleid;
+        this.pid = pid;
+        this.likerid = likerid;
+        this.likedate = likedate;
+    }
+
 
     public Integer getId() {
         return id;
