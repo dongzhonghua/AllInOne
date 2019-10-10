@@ -6,6 +6,7 @@ import xyz.dsvshx.blog.utils.Result;
 
 public interface UserService {
     User findUserByPhone(String phone);
+    User findUserByusername(String phone);
 
     int findIdByUsername(String username);
 
@@ -18,4 +19,6 @@ public interface UserService {
     String insert(User user);
 
     String findUsernameByid(Integer answererid);
+
+    boolean isSuperAdmin(String phone);
 }

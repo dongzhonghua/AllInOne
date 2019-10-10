@@ -34,6 +34,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByusername(String username) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andPhoneEqualTo(username);
+        return userMapper.selectByExample(userExample).get(0);
+
+    }
+
+    @Override
     public int findIdByUsername(String username) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
@@ -124,6 +133,19 @@ public class UserServiceImpl implements UserService {
     public String findUsernameByid(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         return user.getUsername();
+    }
+
+    @Override
+    public boolean isSuperAdmin(String phone) {
+        int userId = userMapper.findUserByPhone(phone).getId();
+        List<Object> roleIds = userMapper.findRoleIdByUserId(userId);
+
+        for(Object i : roleIds){
+            if((int)i == 3){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void insertRole(int userId, int roleUser) {

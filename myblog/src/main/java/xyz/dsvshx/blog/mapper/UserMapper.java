@@ -57,4 +57,7 @@ public interface UserMapper {
     int updateByPrimaryKeyWithBLOBs(User record);
 
     int updateByPrimaryKey(User record);
+
+    @Select("select Role_id from user_role where User_id=#{userId}")
+    List<Object> findRoleIdByUserId(@Param("userId") int userId);
 }

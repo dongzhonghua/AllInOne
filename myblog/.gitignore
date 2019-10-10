@@ -33,3 +33,4 @@ build/
 ###my
 .mp4
 /log
+*.log
