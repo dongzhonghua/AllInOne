@@ -12,6 +12,8 @@
 
 </head>
 <body>
+
+
 <div class="app">
     <nav class="navbar navbar-default"></nav>
     <nav class="navbar  navbar-default navbar-fixed-top">
@@ -35,7 +37,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav" style="margin-left: 700px;">
-                    <li><a href="#" style="font-weight: bold; font-size: 16px">创作快乐！</a> </li>
+                    <li><a href="#" style="font-weight: bold; font-size: 16px">创作快乐！</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -64,6 +66,8 @@
             <div class="row"></div>
         </div>
     </nav>
+
+
     <div class="container-fluid">
         <div class="article-title">
             <div class="col-md-11">
@@ -74,7 +78,43 @@
             </div><!-- /.col-lg-6 -->
             <div class="col-md-1">
                 <span class="input-group-btn">
-                    <button class="btn btn-success btn-lg" type="button" id="issue-article">发布</button>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                        发布
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">发布博客</h4>
+                          </div>
+                          <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                <h5>文章类型:</h5>
+                                </div>
+                                <div class="col-md-4">
+                                  <select class="form-control">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  </select>
+                                </div>
+
+                            </div>
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">发布</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                     </span>
             </div>
         </div>

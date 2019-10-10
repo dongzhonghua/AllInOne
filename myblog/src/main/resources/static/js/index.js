@@ -1,6 +1,6 @@
 //填充
 function putInArticle(data) {
-    var articles = $(`#articles`);
+    var articles = $("#articles");
     articles.empty();
     $.each(data['articles'], function (index, obj) {
         if (index != (data.length) - 1) {

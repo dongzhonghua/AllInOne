@@ -29,6 +29,8 @@
 
 </head>
 <body>
+
+</div>
 <div id="app" style="background-color: #f9f9f9">
     <div th:replace="header :: header"></div>
     <div id="main">
@@ -36,7 +38,10 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="article">
-                        <div class="article-top"></div>
+                        <div class="article-top">
+
+
+                        </div>
                         <div class="article-content">
                             <div id="my-article">
                                 <textarea style="display:none;" name="editormd-markdown-doc" id="mdText"></textarea>
@@ -56,6 +61,7 @@
             </div>
         </div>
     </div>
+
     <div th:replace="footer :: footer"></div>
 </div>
 <script src="/js/show.js"></script>
