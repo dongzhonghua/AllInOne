@@ -3,13 +3,14 @@ package xyz.dsvshx.blog.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import xyz.dsvshx.blog.entity.Categories;
 import xyz.dsvshx.blog.mapper.CategoriesMapper;
 import xyz.dsvshx.blog.service.ArticleService;
 import xyz.dsvshx.blog.service.CategoriesService;
 
 import java.util.List;
-
+@Service
 public class CategoriesServiceImpl implements CategoriesService {
     @Autowired
     CategoriesMapper categoryMapper;
@@ -36,7 +37,9 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public JSONArray findCategoriesName() {
         List<String> categoryNames = categoryMapper.findCategoriesName();
-        return JSONArray.fromObject(categoryNames);
+        JSONArray objects = new JSONArray();
+        objects.add(categoryNames);
+        return objects;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         for(Categories c : lists){
             jsonObject = new JSONObject();
             jsonObject.put("id", c.getId());
-            jsonObject.put("categoryName", c.getCategoryName());
+            jsonObject.put("categoryName", c.getCategoryname());
             jsonArray.add(jsonObject);
         }
 
@@ -69,7 +72,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         if(type == 1){
             if(isExistCategory == 0){
                 Categories categories = new Categories();
-                categories.setCategoryName(categoryName);
+                categories.setCategoryname(categoryName);
                 categoryMapper.addCategory(categories);
                 jsonObject.put("status", 200);
                 jsonObject.put("id", categoryMapper.findIsExistByCategoryName(categoryName));
