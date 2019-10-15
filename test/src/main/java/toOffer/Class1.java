@@ -191,7 +191,7 @@ public class Class1 {
         }
         return pre;
     }
-
+    //合并两个不递减链表
     public ListNode Merge(ListNode list1, ListNode list2) {
         if (list1 == null) {
             return list2;
@@ -230,14 +230,37 @@ public class Class1 {
 
     //a是不是b的子结构
     public boolean HasSubtree(TreeNode root1, TreeNode root2) {
+        if (root2 == null || root1 == null) {
+            return false;
+        }
+        return isSubtree(root1, root2) || HasSubtree(root1.left, root2) || HasSubtree(root1.right, root2);
 
     }
 
-    public boolean isSubtree(TreeNode root1,TreeNode root2){
-        Stack<TreeNode> stack = new Stack<>();
-        while(root2 != null || !stack.isEmpty()){
-
+    public boolean isSubtree(TreeNode tree1, TreeNode tree2) {
+        if (tree2 == null) {
+            return true;
         }
+        if (tree1 == null) {
+            return false;
+        }
+
+        if (tree1.val != tree2.val) {
+            return false;
+        }
+        return isSubtree(tree1.left, tree2.left) && isSubtree(tree1.right, tree2.right);
+
+    }
+    //二叉树的镜像
+    public void Mirror(TreeNode root) {
+        if(root == null){
+            return;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        Mirror(root.left);
+        Mirror(root.right);
     }
 
     public static void main(String[] args) throws Exception {
