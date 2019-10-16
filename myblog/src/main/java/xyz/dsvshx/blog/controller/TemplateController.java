@@ -30,6 +30,10 @@ public class TemplateController {
     public String video(){
         return "video";
     }
+    @GetMapping("/uploadVideo")
+    public String uploadVideo(){
+        return "uploadVideo";
+    }
 
     @GetMapping("/editor")
     public String editor(){
