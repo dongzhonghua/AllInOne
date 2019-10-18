@@ -1,8 +1,6 @@
 package toOffer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 class ListNode {
     int val;
@@ -12,7 +10,10 @@ class ListNode {
         this.val = val;
     }
 }
-
+class LNode<T> {
+    T data;
+    LNode<T> next;
+}
 
 class TreeNode {
     int val;
@@ -24,8 +25,86 @@ class TreeNode {
     }
 }
 
+//栈的数组实现,还有链表也可以实现。
+class ArrayStack<T> {
+    private ArrayList<T> arr;
+    private int stackSize;
+
+    public ArrayStack() {
+        stackSize = 0;
+        arr = new ArrayList<>();
+    }
+
+    public boolean isEmpty() {
+        return stackSize == 0;
+    }
+
+    public int size() {
+        return stackSize;
+    }
+
+    public T top() {
+        if (isEmpty()) {
+            return null;
+        }
+        return arr.get(stackSize - 1);
+    }
+
+    public T pop() {
+        if (stackSize > 0) {
+            return arr.get(--stackSize);
+        } else {
+            System.out.println("栈已经为空");
+            return null;
+        }
+    }
+
+    public void push(T item) {
+        arr.add(item);
+        stackSize++;
+    }
+}
+
+//队列的链表实现
+class LinkListQueue<T> {
+    private LNode pHead;
+    private LNode pEnd;
+    public LinkListQueue(){
+        pEnd=pHead=null;
+    }
+    public boolean isEmpty(){
+        return pHead==null;
+    }
+    public int size(){
+        int size = 0;
+        LNode p = pHead;
+        while (p!=null){
+            size++;
+            p = p.next;
+        }
+        return size;
+    }
+    public void enQueue(T e){
+        LNode<T> p = new LNode<>();
+        p.data = e;
+        p.next = null;
+        if (pHead==null){
+            pHead = pEnd = p;
+        }
+    }
+
+}
 
 public class Class1 {
+
+    public void printLinkList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + "->");
+            head = head.next;
+        }
+        System.out.println("null");
+
+    }
 
 
     public static boolean Find(int target, int[][] array) {
@@ -182,15 +261,23 @@ public class Class1 {
     //反转链表
     public ListNode ReverseList(ListNode head) {
         ListNode pre = null;
-        ListNode p = null;
+        ListNode next = null;
         while (head.next != null) {
-            p = head.next;
+            next = head.next;
             head.next = pre;
             pre = head;
-            head = p;
+            head = next;
         }
         return pre;
     }
+
+    //递归的逆序输出
+    public void ReversePrint(ListNode head) {
+        if (head == null) return;
+        ReversePrint(head.next);
+        System.out.println(head.val);
+    }
+
     //合并两个不递减链表
     public ListNode Merge(ListNode list1, ListNode list2) {
         if (list1 == null) {
@@ -251,9 +338,10 @@ public class Class1 {
         return isSubtree(tree1.left, tree2.left) && isSubtree(tree1.right, tree2.right);
 
     }
+
     //二叉树的镜像
     public void Mirror(TreeNode root) {
-        if(root == null){
+        if (root == null) {
             return;
         }
         TreeNode temp = root.left;
@@ -263,6 +351,40 @@ public class Class1 {
         Mirror(root.right);
     }
 
+    //1.3两个单链表的和
+    //再加上输出链表的
+    public int TwoLinkSum(ListNode head1, ListNode head2) {
+        int sum = 0;
+        int carry = 0;
+        int index = 1;
+        ListNode head = new ListNode(0);
+        ListNode next = head;
+        head = next;
+        while (head1 != null || head2 != null) {
+            int h1 = 0, h2 = 0;
+            if (head1 != null) {
+                h1 = head1.val;
+                head1 = head1.next;
+            }
+            if (head2 != null) {
+                h2 = head2.val;
+                head2 = head2.next;
+            }
+            next.next = new ListNode(((h1 + h2) % 10 + carry));
+            next = next.next;
+
+            sum += ((h1 + h2) % 10 + carry) * index;
+            carry = (h1 + h2) / 10;
+            index *= 10;
+        }
+        if (carry == 1) next.next = new ListNode(carry);
+        next.next.next = null;
+        printLinkList(head);
+        return sum + index * carry;
+    }
+
+
+    //==================================================================================================================
     public static void main(String[] args) throws Exception {
         Class1 class1 = new Class1();
         int[] arr = {1, 4, 3, 6, 2, 8, 9};
@@ -277,6 +399,6 @@ public class Class1 {
         list3.next = list5;
         list2.next = list4;
         list4.next = list6;
-        class1.Merge(list1, list2);
+
     }
 }
