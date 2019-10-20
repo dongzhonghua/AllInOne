@@ -1,0 +1,41 @@
+15:46:09 [restartedMain] INFO  BlogApplication - Starting BlogApplication on zhonghua with PID 142368 (C:\Users\dong0\Documents\java_practice\AAA\myblog\target\classes started by dongzhonghua in C:\Users\dong0\Documents\java_practice\AAA)
+15:46:09 [restartedMain] INFO  BlogApplication - No active profile set, falling back to default profiles: default
+15:46:09 [restartedMain] INFO  DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+15:46:09 [restartedMain] INFO  DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+15:46:12 [restartedMain] INFO  RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+15:46:12 [restartedMain] INFO  RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+15:46:12 [restartedMain] INFO  RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 147ms. Found 0 repository interfaces.
+15:46:13 [restartedMain] INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration' of type [org.springframework.security.config.annotation.configuration.ObjectPostProcessorConfiguration$$EnhancerBySpringCGLIB$$3a9ce0b0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:46:13 [restartedMain] INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a1ef1876] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:46:13 [restartedMain] INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'objectPostProcessor' of type [org.springframework.security.config.annotation.configuration.AutowireBeanFactoryObjectPostProcessor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:46:13 [restartedMain] INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@67a2efad' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:46:13 [restartedMain] INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration' of type [org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration$$EnhancerBySpringCGLIB$$5f718362] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:46:13 [restartedMain] INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+15:46:14 [restartedMain] INFO  TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+15:46:14 [restartedMain] INFO  Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+15:46:14 [restartedMain] INFO  StandardService - Starting service [Tomcat]
+15:46:14 [restartedMain] INFO  StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.24]
+15:46:14 [restartedMain] INFO  [/] - Initializing Spring embedded WebApplicationContext
+15:46:14 [restartedMain] INFO  ContextLoader - Root WebApplicationContext: initialization completed in 5135 ms
+15:46:14 [restartedMain] INFO  DruidDataSourceAutoConfigure - Init DruidDataSource
+15:46:15 [restartedMain] INFO  DruidDataSource - {dataSource-1} inited
+15:46:17 [restartedMain] INFO  EndpointLinksResolver - Exposing 2 endpoint(s) beneath base path '/actuator'
+15:46:17 [restartedMain] INFO  PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+15:46:17 [restartedMain] INFO  ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+15:46:17 [restartedMain] INFO  OptionalLiveReloadServer - LiveReload server is running on port 35729
+15:46:18 [restartedMain] INFO  WelcomePageHandlerMapping - Adding welcome page template: index
+15:46:18 [restartedMain] WARN  TemplateMode - [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+15:46:18 [restartedMain] INFO  DefaultSecurityFilterChain - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2ccf1959, org.springframework.security.web.context.SecurityContextPersistenceFilter@6c42ad9c, org.springframework.security.web.header.HeaderWriterFilter@5b920f0, org.springframework.security.web.authentication.logout.LogoutFilter@28c74050, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@15861f24, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@44fe9e4d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@69da173c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3e09288, org.springframework.security.web.session.SessionManagementFilter@395a4efc, org.springframework.security.web.access.ExceptionTranslationFilter@1587b273, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@33f2509c]
+15:46:19 [restartedMain] INFO  DocumentationPluginsBootstrapper - Context refreshed
+15:46:19 [restartedMain] INFO  DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+15:46:19 [restartedMain] INFO  ApiListingReferenceScanner - Scanning for api listing references
+15:46:20 [restartedMain] INFO  Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+15:46:20 [restartedMain] INFO  TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+15:46:20 [restartedMain] INFO  BlogApplication - Started BlogApplication in 12.619 seconds (JVM running for 16.005)
+15:46:21 [RMI TCP Connection(2)-10.28.191.230] INFO  [/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+15:46:21 [RMI TCP Connection(2)-10.28.191.230] INFO  DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+15:46:21 [RMI TCP Connection(2)-10.28.191.230] INFO  DispatcherServlet - Completed initialization in 16 ms
+15:46:21 [parallel-1] INFO  EpollProvider - Starting without optional epoll library
+15:46:21 [parallel-1] INFO  KqueueProvider - Starting without optional kqueue library
+15:51:14 [Thread-5] INFO  ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+15:51:15 [Thread-5] INFO  DruidDataSource - {dataSource-1} closed

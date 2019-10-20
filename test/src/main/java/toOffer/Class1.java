@@ -10,6 +10,7 @@ class ListNode {
         this.val = val;
     }
 }
+
 class LNode<T> {
     T data;
     LNode<T> next;
@@ -66,33 +67,153 @@ class ArrayStack<T> {
 }
 
 //队列的链表实现
-class LinkListQueue<T> {
-    private LNode pHead;
-    private LNode pEnd;
-    public LinkListQueue(){
-        pEnd=pHead=null;
+class LinkedListQueue<T> {
+    private LNode<T> pHead;
+    private LNode<T> pEnd;
+
+    public LinkedListQueue() {
+        pEnd = pHead = null;
     }
-    public boolean isEmpty(){
-        return pHead==null;
+
+    public boolean isEmpty() {
+        return pHead == null;
     }
-    public int size(){
+
+    public int size() {
         int size = 0;
         LNode p = pHead;
-        while (p!=null){
+        while (p != null) {
             size++;
             p = p.next;
         }
         return size;
     }
-    public void enQueue(T e){
+
+    public void enQueue(T e) {
         LNode<T> p = new LNode<>();
         p.data = e;
         p.next = null;
-        if (pHead==null){
+        if (pHead == null) {
             pHead = pEnd = p;
+        } else {
+            pEnd.next = p;
+            pEnd = p;
         }
     }
 
+    public void deQueue() {
+        if (pHead == null) return;
+        pHead = pHead.next;
+        if (pHead == null) pEnd = null;
+    }
+
+    public T getFront() {
+        if (pHead == null) return null;
+        return pHead.data;
+    }
+
+    public T getBack() {
+        if (pEnd == null) {
+            return null;
+        }
+        return pEnd.data;
+    }
+
+}
+
+class DoubleLinkedListNode {
+    public int val;
+    public int key;
+    public DoubleLinkedListNode pre;
+    public DoubleLinkedListNode next;
+
+    public DoubleLinkedListNode(int key, int value) {
+        val = value;
+        this.key = key;
+    }
+}
+
+//LRU算法，要采用双向链表和hashmap(链表查找慢)。
+class LRU {
+    private int cachedSize;
+    private int capacity;
+    private Map<Integer, DoubleLinkedListNode> map = new HashMap<>();
+    private DoubleLinkedListNode head;
+    private DoubleLinkedListNode end;
+
+    public LRU(int capacity) {
+        this.capacity = capacity;
+        cachedSize = 0;
+    }
+
+    //有的话返回链表节点，并设为头结点，否则返回-1
+    public int get(int Key) {
+
+        if (map.containsKey(Key)) {
+            DoubleLinkedListNode node = map.get(Key);
+            removeNode(node);
+            setHead(node);
+            return node.val;
+        } else {
+            return -1;
+        }
+    }
+
+    //要考虑是头结点还有尾节点的情况。
+    public void removeNode(DoubleLinkedListNode node) {
+        DoubleLinkedListNode pre = node.pre;
+        DoubleLinkedListNode next = node.next;
+        if (pre != null) {
+            pre.next = next;
+        } else {
+            head = next;
+        }
+        if (next != null) {
+            next.pre = pre;
+        } else {
+            end = pre;
+        }
+
+    }
+
+    public void setHead(DoubleLinkedListNode node) {
+        node.next = head;
+        node.pre = null;
+        if (head != null) {
+            head.pre = node;
+        } else {
+            head = node;
+        }
+        if (end == null) {
+            end = node;
+        }
+    }
+
+    //有的话就放到头上，当然还有更改。没有的话判断容量。
+    public void set(int key, int value) {
+        if (map.containsKey(key)) {
+            DoubleLinkedListNode node = map.get(key);
+            node.val = value;
+            removeNode(node);
+            setHead(node);
+        } else {
+            DoubleLinkedListNode node = new DoubleLinkedListNode(key, value);
+            if (cachedSize < capacity) {
+                setHead(node);
+                map.put(key, node);
+                cachedSize++;
+            } else {
+                map.remove(end.key);
+                end = end.pre;
+                if (end != null) {
+                    end.next = null;
+                }
+                map.put(key, node);
+                setHead(node);
+            }
+        }
+
+    }
 }
 
 public class Class1 {
@@ -185,8 +306,10 @@ public class Class1 {
     }
 
     public int pop() {
-        while (!stack1.isEmpty()) {
-            stack2.push(stack1.pop());
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
         }
         Integer res = stack2.pop();
 
@@ -383,6 +506,69 @@ public class Class1 {
         return sum + index * carry;
     }
 
+    //递归实现栈的翻转,???????????还没解决
+    public static void moveBottomToTop(Stack<Integer> s) {
+        if (s.empty()) return;
+        int top1 = s.pop();
+        if (!s.empty()) {
+            //    递归处理不包含栈顶元素的子栈
+            moveBottomToTop(s);
+            int top2 = s.pop();
+            //    交换栈顶元素与子栈栈顶元素
+            s.push(top1);
+            s.push(top2);
+        } else {
+            s.push(top1);
+        }
+
+    }
+
+    public static void reverseStack(Stack<Integer> s) {
+        if (s.empty()) return;
+        moveBottomToTop(s);
+        int top = s.pop();
+        //   递归处理子栈
+        reverseStack(s);
+        s.push(top);
+    }
+
+    //是不是出栈序列
+    public static boolean isPopSerial(String push, String pop) {
+        if (push == null || pop == null) return false;
+        int pushIndex = 0;
+        int popIndex = 0;
+        int pushLength = push.length();
+        int popLength = pop.length();
+        if (pushLength != popLength) return false;
+        Stack<Character> stack = new Stack<>();
+        while (pushIndex < pushLength) {
+            stack.push(push.charAt(pushIndex));
+            pushIndex++;
+            while (!stack.empty() && stack.peek() == pop.charAt(popIndex)) {
+                stack.pop();
+                popIndex++;
+            }
+        }
+        return stack.empty() && popIndex == popLength;
+    }
+    //如何用O(1)时间复杂度求栈中的最小元素
+    //用空间换时间，两个栈，第二个保存最小值，入栈时比较后入栈。出栈时如果是最小则出栈，所以醉笑栈保存的都是当前最小值。
+    //pass
+
+    //把一个有序数组构造一个完全二叉树中
+    public static TreeNode arrayToTree(int[] arr,int start, int end){
+        TreeNode root = null;
+        if (end<start){
+            int mid = (start+end+1)/2;
+            root = new TreeNode(arr[mid]);
+            root.left = arrayToTree(arr,start,mid-1);
+            root.right = arrayToTree(arr,mid+1,end);
+        }else {
+            return null;
+        }
+        return root;
+    }
+    //层序遍历
 
     //==================================================================================================================
     public static void main(String[] args) throws Exception {

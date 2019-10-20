@@ -197,9 +197,8 @@ public class ArticleController {
         return returnJson;
     }
 
-    @RequestMapping("/uploadImage")
-    public @ResponseBody
-    Map<String, Object> uploadImage(HttpServletRequest request, HttpServletResponse response,
+    @PostMapping("/uploadImage")
+    public Map<String, Object> uploadImage(HttpServletRequest request, HttpServletResponse response,
                                     @RequestParam(value = "editormd-image-file", required = false) MultipartFile file) {
         return null;
     }

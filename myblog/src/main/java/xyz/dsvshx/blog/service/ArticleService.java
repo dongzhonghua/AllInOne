@@ -1,6 +1,7 @@
 package xyz.dsvshx.blog.service;
 
 import com.alibaba.fastjson.JSONArray;
+import xyz.dsvshx.blog.entity.ArticleWithBLOBs;
 import xyz.dsvshx.blog.utils.Result;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.dsvshx.blog.entity.Article;
@@ -8,7 +9,7 @@ import xyz.dsvshx.blog.entity.Article;
 import java.util.Map;
 
 public interface ArticleService {
-    Result insertArticle(Article article);
+    Result insertArticle(ArticleWithBLOBs article);
     @Transactional
     Result updateArticleById(Article article);
     Map<String, String> findArticleTitleByArticleId(long id);

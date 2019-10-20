@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/editormd.css">
+    <link rel="stylesheet" href="/css/editor.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="/js/editormd.js"></script>
@@ -72,54 +73,91 @@
         <div class="article-title">
             <div class="col-md-11">
                 <div class="input-group-lg">
-                    <input type="text" class="form-control" placeholder="请输入文章标题">
+                    <input id="article-title" type="text" class="form-control" placeholder="请输入文章标题">
 
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
             <div class="col-md-1">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                        发布
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                      <div class="modal-dialog" role="document">
+                <!--模态框=======================================================-->
+                <button id="public-button" type="button" class="btn btn-primary btn-lg" >
+                    <!--data-toggle="modal" data-target="#myModal"-->
+                发布
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">发布博客</h4>
-                          </div>
-                          <div class="modal-body">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">发布博客</h4>
+                            </div>
+                            <div class="modal-body">
 
-                            <div class="row">
-                                <div class="col-md-2">
-                                <h5>文章类型:</h5>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <p>文章标签:</p>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div id="tags-input" style="display: inline-block">
+
+                                        </div>
+                                        <span class="glyphicon glyphicon-plus-sign" id="append-tags">添加标签</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p>最多添加五个标签</p>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                  <select class="form-control">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  </select>
+
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <p>文章类型:</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select id="select-type" class="form-control">
+                                            <option value="choose" selected>请选择</option>
+                                            <option value="原创">原创</option>
+                                            <option value="转载">转载</option>
+                                        </select>
+                                        <span class="required">*</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <p>文章分类:</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select id="select-categories" class="form-control">
+
+                                        </select>
+                                    </div>
                                 </div>
 
                             </div>
-
-                          </div>
-                          <div class="modal-footer">
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">发布</button>
-                          </div>
+                            <button type="button" class="surePublishBtn btn btn-primary">发布</button>
+                            </div>
                         </div>
-                      </div>
                     </div>
+                </div>
 
 
-                    </span>
             </div>
         </div>
         <div id="editormd">
-            <textarea name="content" style="display:none;"></textarea>
+            <textarea id="editormd-doc" name="content" style="display:none;"></textarea>
+            <textarea id="editormd-html" name="content-html" style="display:none;"></textarea>
+        </div>
+
+        <div class="notice-box notice-box-title">
+            <i class="am-icon-exclamation-circle"></i>
+            <span> 文章标题不能为空</span>
+        </div>
+        <div class="notice-box notice-box-content">
+            <i class="am-icon-exclamation-circle"></i>
+            <span> 文章內容不能为空</span>
         </div>
     </div>
 </div>

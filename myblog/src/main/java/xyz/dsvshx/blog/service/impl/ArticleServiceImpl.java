@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xyz.dsvshx.blog.constant.SiteOwner;
 import xyz.dsvshx.blog.entity.Article;
 import xyz.dsvshx.blog.entity.ArticleExample;
 import xyz.dsvshx.blog.entity.ArticleWithBLOBs;
@@ -13,6 +14,7 @@ import xyz.dsvshx.blog.mapper.ArticleMapper;
 import xyz.dsvshx.blog.service.*;
 import xyz.dsvshx.blog.utils.Result;
 import xyz.dsvshx.blog.utils.ResultUtil;
+import xyz.dsvshx.blog.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,10 +41,48 @@ public class ArticleServiceImpl implements ArticleService {
     private CommentLikesRecordService commentLikesRecordService;
 
     @Override
-    public Result insertArticle(Article article) {
+    public Result insertArticle(ArticleWithBLOBs article) {
+        JSONObject articleReturn = new JSONObject();
+        try {
+            if ("".equals(article.getOriginalauthor())) {
+                article.setOriginalauthor(article.getAuthor());
+            }
+            if ("".equals(article.getArticleurl())) {
+                //保存文章的url
+                String url = SiteOwner.SITE_OWNER_URL + "/article/" + article.getArticleid();
+                article.setArticleurl(url);
+            }
+            Article endArticleId = articleMapper.findEndArticleId();
+            //设置文章的上一篇文章id
+            if (endArticleId != null) {
+                article.setLastarticleid(endArticleId.getArticleid());
+            }
+            articleMapper.insertArticle(article);
+            //判断发表文章的归档日期是否存在，不存在则插入归档日期
+            TimeUtil timeUtil = new TimeUtil();
+            String archiveName = timeUtil.timeWhippletreeToYear(article.getPublishdate().substring(0, 7));
+            //archiveService.addArchiveName(archiveName);
+            //新文章加入访客量
+            visitorService.insertVisitorArticlePage("article/" + article.getArticleid());
+            //设置上一篇文章的下一篇文章id
+            if (endArticleId != null) {
+                articleService.updateArticleLastOrNextId("nextArticleId", article.getArticleid(), endArticleId.getArticleid());
+            }
 
+            articleReturn.put("status", 200);
+            articleReturn.put("articleTitle", article.getArticletitle());
+            articleReturn.put("updateDate", article.getUpdatedate());
+            articleReturn.put("author", article.getOriginalauthor());
+            //本博客中的URL
+            articleReturn.put("articleUrl", "/article/" + article.getArticleid());
+            return ResultUtil.success(articleReturn);
+        } catch (Exception e) {
+            articleReturn.put("status", 500);
+            log.error("用户 " + article.getAuthor() + " 保存文章 " + article.getArticletitle() + " 失败");
+            e.printStackTrace();
+            return ResultUtil.success(articleReturn);
 
-        return null;
+        }
     }
 
     @Override
@@ -90,8 +130,8 @@ public class ArticleServiceImpl implements ArticleService {
         thisPageInfo.put("isLastPage", pageInfo.isIsLastPage());
         thisPageInfo.put("navigatepageNums", pageInfo.getNavigatepageNums());
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("articles",newArticles);
-        jsonObject.put("pageInfo",thisPageInfo);
+        jsonObject.put("articles", newArticles);
+        jsonObject.put("pageInfo", thisPageInfo);
         return ResultUtil.success(jsonObject);
 
     }

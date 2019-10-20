@@ -52,10 +52,12 @@
                         <p>文章类型:</p>
                     </div>
                     <div class="col-md-4">
-                        <select class="form-control">
-                            <option>1</option>
-                            <option>2</option>
+                        <select id="select-type" class="form-control">
+                            <option value="choose" selected>请选择</option>
+                            <option value="原创">原创</option>
+                            <option value="转载">转载</option>
                         </select>
+                        <span class="required">*</span>
                     </div>
                 </div>
                 <div class="row">
@@ -79,13 +81,6 @@
     </div>
 </div>
 <script>
-    var in1 = $('<input class="category-input" type=\"text\">');
-    var tags = $("#tags-input");
-
-    $("#append-tags").click(function () {
-        console.log("aaa");
-        tags.append(in1);
-    });
 
 
 </script>
