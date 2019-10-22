@@ -1,8 +1,5 @@
 package toOffer;
 
-import javafx.scene.transform.Rotate;
-import sun.reflect.generics.tree.Tree;
-
 import java.util.*;
 
 class ListNode {
@@ -710,7 +707,30 @@ public class Class1 {
         int min = arr[0];
         int len = arr.length;
         int i = 0;
-
+        for (i = 0; i < len - 1; i += 2) {
+            if (arr[i] > arr[i + 1]) {
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+            }
+        }
+        min = arr[0];
+        for (i = 2; i < len; i += 2) {
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+        }
+        max = arr[1];
+        for (i = 3; i < len; i += 2) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        //    数组个数是奇数个的情况需要特殊处理。
+        if (len % 2 == 1) {
+            if (max < arr[len - 1]) max = arr[len - 1];
+            if (min > arr[len - 1]) min = arr[len - 1];
+        }
 
     }
 
