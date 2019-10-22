@@ -1,5 +1,8 @@
 package toOffer;
 
+import javafx.scene.transform.Rotate;
+import sun.reflect.generics.tree.Tree;
+
 import java.util.*;
 
 class ListNode {
@@ -347,6 +350,7 @@ public class Class1 {
         return Fib(n - 1) + Fib(n - 2);
     }
 
+    //原有数组基础上重新排序
     public static void reOrderArray(int[] array) {
         //相对位置不变，稳定性
         //插入排序的思想
@@ -394,7 +398,7 @@ public class Class1 {
         return pre;
     }
 
-    //递归的逆序输出
+    //递归的逆序输出，既要看局部又要看整体。
     public void ReversePrint(ListNode head) {
         if (head == null) return;
         ReversePrint(head.next);
@@ -447,6 +451,7 @@ public class Class1 {
 
     }
 
+    //子结构，一开始以为是相等。
     public boolean isSubtree(TreeNode tree1, TreeNode tree2) {
         if (tree2 == null) {
             return true;
@@ -460,6 +465,14 @@ public class Class1 {
         }
         return isSubtree(tree1.left, tree2.left) && isSubtree(tree1.right, tree2.right);
 
+    }
+
+    public boolean sameTree(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) return true;
+        if (root1 == null || root2 == null) return false;
+        if (root1.val == root2.val) {
+            return sameTree(root1.right, root2.right) && sameTree(root1.left, root2.left);
+        } else return false;
     }
 
     //二叉树的镜像
@@ -556,25 +569,156 @@ public class Class1 {
     //pass
 
     //把一个有序数组构造一个完全二叉树中
-    public static TreeNode arrayToTree(int[] arr,int start, int end){
+    public static TreeNode arrayToTree(int[] arr, int start, int end) {
         TreeNode root = null;
-        if (end<start){
-            int mid = (start+end+1)/2;
+        if (end >= start) {
+            int mid = (start + end + 1) / 2;
             root = new TreeNode(arr[mid]);
-            root.left = arrayToTree(arr,start,mid-1);
-            root.right = arrayToTree(arr,mid+1,end);
-        }else {
+            root.left = arrayToTree(arr, start, mid - 1);
+            root.right = arrayToTree(arr, mid + 1, end);
+        } else {
             return null;
         }
         return root;
     }
-    //层序遍历
+
+    //层序遍历,队列是个关键。
+    public void levelOrder(TreeNode root) {
+        if (root == null) return;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print("->" + node.val);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+    }
+
+    //前序遍历,和中序遍历是一样的，只不过打印的位置不一样，后序遍历两个栈，其他和前序遍历类似，层序遍历用队列。
+    //先序遍历,非空访节点，入栈得左点，空点出栈得右点。
+    public static void preOrder(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null || !stack.isEmpty()) {
+            if (root != null) {
+                System.out.println(root.val);
+                stack.push(root);
+                root = root.left;
+            } else {
+                root = stack.pop();
+                root = root.right;
+            }
+        }
+    }
+
+    //后序遍历
+    //后序遍历，和前序遍历反着来，左变右，右变左，新加一个栈存结果。
+    public static void postOrder(TreeNode root) {
+        if (root == null) return;
+        Stack<TreeNode> stack1 = new Stack<>();
+        Stack<TreeNode> stack2 = new Stack<>();
+        stack1.push(root);
+        while (!stack1.isEmpty()) {
+            TreeNode node = stack1.pop();
+            stack2.push(node);
+            if (node.left != null) {
+                stack1.push(node.left);
+            }
+            if (node.right != null) {
+                stack1.push(node.right);
+            }
+        }
+        while (!stack2.isEmpty()) {
+            TreeNode node = stack2.pop();
+            System.out.println(node.val);
+        }
+    }
+
+    //中序遍历并变成双向链表，l,r,代表前后
+    //中序遍历,非空则入栈，入栈得左点，空点出栈访节点，节点变右点。
+    private static TreeNode inOrderAndLinkedList(TreeNode root) {
+        TreeNode pHead = new TreeNode(0);
+        //pHead很重要，起到保留的作用
+        //cur和pre这两个指针要理清楚，这两个指针每一次都要同时向后移动，pre在里面起到一个temp的作用。
+        TreeNode cur = pHead;
+        TreeNode pre = null;
+        if (null == root) return pHead;
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null || !stack.isEmpty()) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                root = stack.pop();
+                System.out.println(root.val);
+                cur.right = root;
+                pre = cur;
+                cur.right.left = pre;
+                cur = cur.right;
+                root = root.right;
+            }
+        }
+        return pHead;
+    }
+
+    //二叉树的最大子树和,利用递归方法,递归还是想不出来。
+    private static int maxSum = Integer.MIN_VALUE;
+
+    public static int findMaxSubTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int lmax = findMaxSubTree(root.left);
+        int rmax = findMaxSubTree(root.right);
+        //因为null返回的是零，所以这里也包含了叶子节点了。
+        int sum = lmax + rmax + root.val;
+        if (sum > maxSum) {
+            maxSum = sum;
+        }
+        return sum;
+    }
+    //是否是二元查找树后序遍历的序列
+    //这个主要是思路，还是递归的解法结合arr下标的变换。和前面好几道题的思路都非常像、
+    //pass
+
+
+    //数组------------------------------------------------------------------------------------------------------------------
+
+    //数组中找出相同的元素
+    //异或，相同为零，不同不为零。0与其他为其他。
+    public int findRepeatNum(int[] arr) {
+        int len = arr.length;
+        int res = 0;
+        for (int i = 0; i < len; i++) {
+            res ^= arr[i];
+        }
+        for (int j = 0; j < len; j++) {
+            res ^= j;
+        }
+        return res;
+    }
+
+    //数组里面的最大值最小值。
+    public static void fidMaxMin(int[] arr) {
+        //方法一：定义两个变量，为数组的第一个值。之后逐一比较，但是最坏情况是比较2n-2次。
+        //方法二：分治算法。分成两个，大的放左边，小的放右边。
+        int max = arr[0];
+        int min = arr[0];
+        int len = arr.length;
+        int i = 0;
+
+
+    }
+
 
     //==================================================================================================================
     public static void main(String[] args) throws Exception {
         Class1 class1 = new Class1();
-        int[] arr = {1, 4, 3, 6, 2, 8, 9};
-        reOrderArray(arr);
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 4};
         ListNode list1 = new ListNode(1);
         ListNode list2 = new ListNode(2);
         ListNode list3 = new ListNode(3);
@@ -585,6 +729,8 @@ public class Class1 {
         list3.next = list5;
         list2.next = list4;
         list4.next = list6;
-
+        TreeNode treeNode = arrayToTree(arr, 0, 6);
+        System.out.println(class1.findRepeatNum(arr));
     }
+
 }
