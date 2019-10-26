@@ -227,7 +227,7 @@ public class Class1 {
 
     }
 
-
+    //二维有序数组查找
     public static boolean Find(int target, int[][] array) {
         int length = array.length;
         int number = array[0].length;
@@ -247,6 +247,20 @@ public class Class1 {
                     }
                 }
             }
+        }
+        return false;
+    }
+
+    //二维有序数组的另一种方法，更快。
+    public static boolean findWithBinary(int[][] arr, int data) {
+        int i = 0;
+        int rows = arr.length;
+        int columns = arr[0].length;
+        int j = columns - 1;
+        while (i < rows && j > 0) {
+            if (arr[i][j] == data) return true;
+            else if (arr[i][j] > data) --j;
+            else ++i;
         }
         return false;
     }
@@ -733,6 +747,122 @@ public class Class1 {
         }
 
     }
+
+    //快速排序，找个基准数
+    public static void quickSort(int[] arr, int low, int high) {
+        int i, j, base, temp;
+        if (low > high) return;
+        i = low;
+        j = high;
+        base = arr[low];
+        while (i < j) {
+            //    先看右边，依次往左比较
+            while (base <= arr[j] && i < j) {
+                j--;
+            }
+            //    在看左边，依次往右比较
+            while (base >= arr[i] && i < j) {
+                i++;
+            }
+            //    如果条件满足交换
+            if (i < j) {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        //最后将基准为与i和j相等位置的数字交换
+        //此时i的位置绝对是比base小的，否则i到不了这个位置。
+        arr[low] = arr[i];
+        arr[i] = base;
+        //递归调用左半数组
+        quickSort(arr, low, j - 1);
+        //递归调用右半数组
+        quickSort(arr, j + 1, high);
+    }
+    //找出第k小的数。可以用上面的快速排序思想，先分成三组，如果第i个数是k则返回，否则只需要递归某一部分就可以了。
+    //也就是在快速排序上加几个判断。
+    //pass
+
+    //数组中两个元素的最小距离
+    //动态规划问题，比较简单。思想就是保存之前的结果以用作下一次的计算。
+    public static int minDistance(int[] arr, int num1, int num2) {
+        if (arr == null || arr.length <= 0) {
+            return Integer.MAX_VALUE;
+        }
+        int lastPos1 = -1;
+        int lastPos2 = -2;
+        int minDis = Integer.MAX_VALUE;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == num1) {
+                lastPos1 = i;
+                if (lastPos2 >= 0) {
+                    minDis = Math.min(minDis, lastPos1 - lastPos2);
+                }
+            }
+            if (arr[i] == num2) {
+                lastPos2 = i;
+                if (lastPos1 >= 0) {
+                    minDis = Math.min(minDis, lastPos2 - lastPos1);
+                }
+            }
+        }
+        return minDis;
+    }
+
+    //三个升序数组，找最小三元组距离
+    public static int min(int a, int b, int c) {
+        int min = Math.min(a, b);
+        min = Math.min(min, c);
+        return min;
+    }
+
+    public static int max(int a, int b, int c) {
+        int max = Math.max(a, b);
+        max = Math.max(max, c);
+        return max;
+    }
+
+    public static int minDistance(int a[], int b[], int c[]) {
+        int aLen = a.length;
+        int bLen = b.length;
+        int cLen = c.length;
+        int curDis = 0;
+        int min = 0;
+        int minDist = Integer.MAX_VALUE;
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        while (true) {
+            curDis = max(Math.abs(a[i] - b[j]), Math.abs(a[i] - c[k]), Math.abs(b[j] - a[i]));
+            if (curDis < minDist) minDist = curDis;
+            min = min(a[i], b[j], c[k]);
+            if (min == a[i]) {
+                if (++i <= aLen) break;//相当于i++,if(i<=len),这个用法很好用。
+            } else if (min == b[j]) {
+                if (++j <= bLen) break;//相当于i++,if(i<=len),这个用法很好用。
+            } else {
+                if (++k <= cLen) break;//相当于i++,if(i<=len),这个用法很好用。
+            }
+        }
+        return minDist;
+    }
+
+    //最大连续子数组和
+    public static int maxSubArray(int[] arr) {
+        //    null
+        int n = arr.length;
+        int res = arr[0];
+        int temp = arr[0];
+        for (int i = 1; i < n; i++) {
+            temp = Math.max(temp + arr[i], arr[i]);
+            res = Math.max(temp, res);
+        }
+        return res;
+    }
+
+    //对数组进行循环移位
+    //对数组的两部分进行翻转，之后再对整个数组进行翻转。
 
 
     //==================================================================================================================
