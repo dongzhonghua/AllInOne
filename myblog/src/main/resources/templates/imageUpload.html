@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/fileinput.css">
+    <link rel="stylesheet" href="/css/fileinput-rtl.css">
+    <!--<link rel="stylesheet" href="/css/theme.css">-->
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/fileinput.js"></script>
+    <!--<script src="/js/piexif.js"></script>-->
+    <!--<script src="/js/purify.js"></script>-->
+    <!--<script src="/js/sortable.js"></script>-->
+    <script src="/js/zh.js"></script>
+    <!--<script src="/js/theme.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row file-loading">
+        <input id="input-images" name="file" type="file" data-show-caption="true"
+               data-browse-on-zone-click="true" multiple>
+
+    </div>
+    <div class="row" style="margin-left: 0px;margin-top: 10px">
+        <p id="input" style="display: inline"></p>
+        <button id="copy" style="display: inline" data-clipboard-target="#input" class="btn btn-default">复制</button>
+    </div>
+    <div class="row" style="margin-left: 0px;margin-top: 10px">
+        <form>
+            <div class="form-group">
+                <label for="input-url">url</label>
+                <input type="text" class="form-control" id="input-url" placeholder="url">
+            </div>
+            <div class="form-group">
+                <label for="input-name">name</label>
+                <input type="text" class="form-control" id="input-name" placeholder="image name">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="submit-url">提交</button>
+            </div>
+        </form>
+        <div class="row" style="margin-left: 0px;margin-top: 10px">
+            <p id="input-url-hand" style="display: inline"></p>
+            <!--<button id="copy-url" style="display: inline" data-clipboard-target="#input" class="btn btn-default">复制</button>-->
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="/js/imageUpload.js"></script>
+<!--<script>-->
+<!--    // 上传附件-->
+<!--    $("#input-images").fileinput({-->
+<!--        language: 'zh',-->
+<!--        dropZoneEnabled: true,//是否显示拖拽区域-->
+<!--        dropZoneTitle: '可以将图片拖放到这里 …支持多文件上传',// 多语言设置，需要引入local中相应的js，例如locales/zh.js-->
+<!--        // theme: "uploadImage", // 主题-->
+<!--        uploadUrl: "/uploadImages", // 上传地址-->
+<!--        minFileCount: 1, // 最小上传数量-->
+<!--        maxFileCount: 5, // 最大上传数量-->
+<!--        maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小-->
+<!--        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],//接收的文件后缀-->
+<!--        overwriteInitial: true, // 覆盖初始预览内容和标题设置-->
+<!--        uploadAsync: true, //默认异步上传-->
+<!--        showUpload: true, //是否显示上传按钮-->
+<!--        showRemove: true, //显示移除按钮-->
+<!--        showPreview: true, //是否显示预览-->
+<!--        initialPreviewAsData: true,//实现初始化预览-->
+<!--        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",//当检测到用于预览的不可读文件类型时，将在每个预览文件缩略图中显示的图标。默认为<i class="glyphicon glyphicon-file"></i>-->
+<!--        showCancel: true, // 显示取消按钮-->
+<!--        showZoom: true, // 显示预览按钮-->
+<!--        showCaption: true, // 显示文件文本框-->
+<!--        uploadLabel: "上传附件", // 上传按钮内容-->
+<!--        browseLabel: '选择附件', // 浏览按钮内容-->
+<!--        browseClass: "btn btn-primary", //文件选择器/浏览按钮的CSS类。默认为btn btn-primary-->
+<!--        uploadClass: "btn btn-success", // 上传按钮样式-->
+<!--        // uploadExtraData: {'taskId':"taskId",'createBy':"userId",'createByname':"username"},   // 上传数据-->
+<!--        uploadExtraData: function (previewId, index) {   //该插件可以向您的服务器方法发送附加数据。这可以通过uploadExtraData在键值对中设置为关联数组对象来完成。所以如果你有设置uploadExtraData={id:'kv-1'}，在PHP中你可以读取这些数据$_POST['id']-->
+<!--            var id = $('#id').val();-->
+<!--            return {seriesId: id};-->
+<!--        },-->
+<!--        hideThumbnailContent: true, // 是否隐藏文件内容-->
+<!--        fileActionSettings: { // 在预览窗口中为新选择的文件缩略图设置文件操作的对象配置-->
+<!--            showRemove: true, // 显示删除按钮-->
+<!--            showUpload: true, // 显示上传按钮-->
+<!--            showDownload: true, // 显示下载按钮-->
+<!--            showZoom: true, // 显示预览按钮-->
+<!--            showDrag: true, // 显示拖拽-->
+<!--            // removeIcon: '<i class="fa fa-trash"></i>',   // 删除图标-->
+<!--            // uploadIcon: '<i class="fa fa-upload"></i>',     // 上传图标-->
+<!--            // uploadRetryIcon: '<i class="fa fa-repeat"></i>'  // 重试图标-->
+<!--        }-->
+<!--    });-->
+<!--    // // 上传成功回调-->
+<!--    // $("#input-images").on("filebatchuploadcomplete", function () {-->
+<!--    //     layer.msg("上传附件成功");-->
+<!--    //     setTimeout("closeUpladLayer()", 2000)-->
+<!--    // });-->
+<!--    // // 上传失败回调-->
+<!--    // $('#input-images').on('fileerror', function (event, data, msg) {-->
+<!--    //     layer.msg(data.msg);-->
+<!--    //     tokenTimeOut(data);-->
+<!--    // });-->
+
+<!--</script>-->
+</html>

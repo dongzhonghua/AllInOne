@@ -39,6 +39,10 @@ public class TemplateController {
     public String editor(){
         return "editor";
     }
+    @GetMapping("/imageUpload")
+    public String imageUpload(){
+        return "imageUpload";
+    }
 
     @GetMapping("/article/{articleId}")
     public String show(@PathVariable("articleId") long articleid,

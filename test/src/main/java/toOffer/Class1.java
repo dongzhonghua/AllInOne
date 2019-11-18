@@ -863,7 +863,31 @@ public class Class1 {
 
     //对数组进行循环移位
     //对数组的两部分进行翻转，之后再对整个数组进行翻转。
+    //pass
 
+    //寻找最多的覆盖点
+    public static int maxCover(int arr[],int L){
+        int count=2;
+        int maxCount = 1;
+        int start = 0;
+        int n = arr.length;
+        int i = 0,j=1;
+        while (i<n&&j<n){
+            while (j<n &&(arr[j]-arr[i]<=L)){
+                j++;
+                count++;
+            }
+            j--;
+            count--;
+            if (count > maxCount) {
+                start = i;
+                maxCount=count;
+            }
+            i++;
+            j++;
+        }
+        return maxCount;
+    }
 
     //==================================================================================================================
     public static void main(String[] args) throws Exception {
