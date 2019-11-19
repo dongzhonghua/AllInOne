@@ -748,6 +748,23 @@ public class Class1 {
 
     }
 
+    //冒泡排序，去陌陌面试发现这都不会了
+
+    public static int[] bubbleSort(int[] arr) {
+        int i = arr.length;
+        for (int j = 0; j < i; j++) {//两个循环。每一个循环之后最大的就到了最后面，所以说第二个循环就是每次变少一个。
+            for (int k = 0; k < i - j - 1; k++) {
+                if(numbers[k]<numbers[k+1]) //这个当时没想好，老是想着用两个变量去表示，明明加个一就可以的。主要还是思路不知道。
+                {
+                    int temp=numbers[k];
+                    numbers[k]=numbers[k+1];
+                    numbers[k+1]=temp;
+                }
+
+            }
+        }
+    }
+
     //快速排序，找个基准数
     public static void quickSort(int[] arr, int low, int high) {
         int i, j, base, temp;
@@ -866,14 +883,14 @@ public class Class1 {
     //pass
 
     //寻找最多的覆盖点
-    public static int maxCover(int arr[],int L){
-        int count=2;
+    public static int maxCover(int arr[], int L) {
+        int count = 2;
         int maxCount = 1;
         int start = 0;
         int n = arr.length;
-        int i = 0,j=1;
-        while (i<n&&j<n){
-            while (j<n &&(arr[j]-arr[i]<=L)){
+        int i = 0, j = 1;
+        while (i < n && j < n) {
+            while (j < n && (arr[j] - arr[i] <= L)) {
                 j++;
                 count++;
             }
@@ -881,7 +898,7 @@ public class Class1 {
             count--;
             if (count > maxCount) {
                 start = i;
-                maxCount=count;
+                maxCount = count;
             }
             i++;
             j++;
