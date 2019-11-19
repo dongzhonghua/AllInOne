@@ -754,11 +754,11 @@ public class Class1 {
         int i = arr.length;
         for (int j = 0; j < i; j++) {//两个循环。每一个循环之后最大的就到了最后面，所以说第二个循环就是每次变少一个。
             for (int k = 0; k < i - j - 1; k++) {
-                if(numbers[k]<numbers[k+1]) //这个当时没想好，老是想着用两个变量去表示，明明加个一就可以的。主要还是思路不知道。
+                if (numbers[k] < numbers[k + 1]) //这个当时没想好，老是想着用两个变量去表示，明明加个一就可以的。主要还是思路不知道。
                 {
-                    int temp=numbers[k];
-                    numbers[k]=numbers[k+1];
-                    numbers[k+1]=temp;
+                    int temp = numbers[k];
+                    numbers[k] = numbers[k + 1];
+                    numbers[k + 1] = temp;
                 }
 
             }
@@ -797,9 +797,19 @@ public class Class1 {
         //递归调用右半数组
         quickSort(arr, j + 1, high);
     }
+
+
     //找出第k小的数。可以用上面的快速排序思想，先分成三组，如果第i个数是k则返回，否则只需要递归某一部分就可以了。
     //也就是在快速排序上加几个判断。
     //pass
+
+    //插入排序，就像是抓牌，手里的是拍好序的，后面每次抓出一个来，从后往前比较，到合适的位置插进去。
+    public static void insertSort(int[] arr){
+        int i,j,temp;
+
+
+    }
+
 
     //数组中两个元素的最小距离
     //动态规划问题，比较简单。思想就是保存之前的结果以用作下一次的计算。
