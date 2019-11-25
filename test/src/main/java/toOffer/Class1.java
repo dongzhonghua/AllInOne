@@ -754,15 +754,16 @@ public class Class1 {
         int i = arr.length;
         for (int j = 0; j < i; j++) {//两个循环。每一个循环之后最大的就到了最后面，所以说第二个循环就是每次变少一个。
             for (int k = 0; k < i - j - 1; k++) {
-                if (numbers[k] < numbers[k + 1]) //这个当时没想好，老是想着用两个变量去表示，明明加个一就可以的。主要还是思路不知道。
+                if (arr[k] < arr[k + 1]) //这个当时没想好，老是想着用两个变量去表示，明明加个一就可以的。主要还是思路不知道。
                 {
-                    int temp = numbers[k];
-                    numbers[k] = numbers[k + 1];
-                    numbers[k + 1] = temp;
+                    int temp = arr[k];
+                    arr[k] = arr[k + 1];
+                    arr[k + 1] = temp;
                 }
 
             }
         }
+        return arr;
     }
 
     //快速排序，找个基准数
