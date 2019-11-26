@@ -24,14 +24,19 @@ class Consumer implements Runnable {
                 PCData data = null;
                 synchronized (queue) {
                     if (queue.size() == 0) {
+                        System.out.println("没有数字，需要等待");
                         queue.wait();
                         queue.notifyAll();
+                    } else {
+                        data = queue.remove(0);
+                        System.out.println(
+                                Thread.currentThread().getId() + " 消费了:" + data.get() + " result:" + (data.get() * data.get()));
+                        System.out.println("还有：" + queue.size() + "个数字");
+
                     }
-                    data = queue.remove(0);
+
                 }
-                System.out.println(
-                        Thread.currentThread().getId() + " 消费了:" + data.get() + " result:" + (data.get() * data.get()));
-                Thread.sleep(1000);
+                //Thread.sleep(3000);
             }
 
         } catch (InterruptedException e) {
@@ -66,15 +71,19 @@ class Producer implements Runnable {
                     break;
                 Random r = new Random();
                 long temp = r.nextInt(100);
-                System.out.println(Thread.currentThread().getId() + " 生产了：" + temp);
                 PCData data = new PCData();
                 data.set(temp);
                 synchronized (queue) {
                     if (queue.size() >= length) {
                         queue.notifyAll();
                         queue.wait();
-                    } else
+                    } else {
                         queue.add(data);
+                        System.out.println(Thread.currentThread().getId() + " 生产了：" + temp+"共"+queue.size());
+
+                    }
+
+
                 }
                 Thread.sleep(1000);
             }
@@ -87,37 +96,38 @@ class Producer implements Runnable {
 }
 
 public class ProduceAndConsumer {
-    void a(int[] str){
+    void a(int[] str) {
         str[1] = 1;
     }
+
     public static void main(String[] args) {
-        //List<PCData> queue = new ArrayList<PCData>();
-        //int length = 10;
-        //Producer p1 = new Producer(queue, length);
-        //Producer p2 = new Producer(queue, length);
-        //Producer p3 = new Producer(queue, length);
-        //Consumer c1 = new Consumer(queue);
-        //Consumer c2 = new Consumer(queue);
-        //Consumer c3 = new Consumer(queue);
-        //ExecutorService service = Executors.newCachedThreadPool();
-        //service.execute(p1);
-        //service.execute(p2);
-        //service.execute(p3);
-        //service.execute(c1);
-        //service.execute(c2);
-        //service.execute(c3);
-        int[] a = new int[]{2,2,2,2,2};
-        new ProduceAndConsumer().a(a);
-        System.out.println(a);
-        Map<String,String> map = new HashMap<>();
-        map.put("a","a");
-        map.put("b","b");
-        map.put("c","c");
-        map.put("d","d");
-        Set<Map.Entry<String, String>> entries = map.entrySet();
-        for (Map.Entry<String,String> entry:entries){
-            String key = entry.getKey();
-        }
+        List<PCData> queue = new ArrayList<PCData>();
+        int length = 10;
+        Producer p1 = new Producer(queue, length);
+        Producer p2 = new Producer(queue, length);
+        Producer p3 = new Producer(queue, length);
+        Consumer c1 = new Consumer(queue);
+        Consumer c2 = new Consumer(queue);
+        Consumer c3 = new Consumer(queue);
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.execute(p1);
+        service.execute(p2);
+        service.execute(p3);
+        service.execute(c1);
+        service.execute(c2);
+        service.execute(c3);
+        //int[] a = new int[]{2,2,2,2,2};
+        //new ProduceAndConsumer().a(a);
+        //System.out.println(a);
+        //Map<String,String> map = new HashMap<>();
+        //map.put("a","a");
+        //map.put("b","b");
+        //map.put("c","c");
+        //map.put("d","d");
+        //Set<Map.Entry<String, String>> entries = map.entrySet();
+        //for (Map.Entry<String,String> entry:entries){
+        //    String key = entry.getKey();
+        //}
     }
 }
 
