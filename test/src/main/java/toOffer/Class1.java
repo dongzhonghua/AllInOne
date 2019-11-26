@@ -278,6 +278,7 @@ public class Class1 {
         return res;
     }
 
+    //这个可以用递归来表示，先递归listnode.next，然后在打印，结果就是先打印后面的，一直打印到第一个。
     public static ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
         ArrayList<Integer> list = new ArrayList<>();
         while (listNode != null) {
@@ -299,6 +300,7 @@ public class Class1 {
         //新建一个TreeNode
         TreeNode pRootOfTree = new TreeNode(pre[preleft]);
         //对中序数组进行输入边界的遍历
+        //这个里面学到的很重要一点就是一直利用原数组，数组的下标发生变化。而不是对原数组进行切片。
         for (int i = inleft; i <= inright; i++) {
             if (pre[preleft] == in[i]) {
                 //重构左子树，注意边界条件
@@ -463,6 +465,7 @@ public class Class1 {
     }
 
     //子结构，一开始以为是相等。
+    //遇到递归，二话不说找边界条件。
     public boolean isSubtree(TreeNode tree1, TreeNode tree2) {
         if (tree2 == null) {
             return true;
@@ -477,7 +480,7 @@ public class Class1 {
         return isSubtree(tree1.left, tree2.left) && isSubtree(tree1.right, tree2.right);
 
     }
-
+    //subtree和sametree这俩是一个比较简单易懂的递归，但是思路清晰
     public boolean sameTree(TreeNode root1, TreeNode root2) {
         if (root1 == null && root2 == null) return true;
         if (root1 == null || root2 == null) return false;
