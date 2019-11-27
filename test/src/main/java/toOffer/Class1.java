@@ -809,7 +809,18 @@ public class Class1 {
 
     //插入排序，就像是抓牌，手里的是拍好序的，后面每次抓出一个来，从后往前比较，到合适的位置插进去。
     public static void insertSort(int[] arr){
-        int i,j,temp;
+        int length = arr.length;
+        for (int index = 1; index<length;index++){
+            int temp = arr[index];//用作比较的值，相当于抓的牌
+            int leftindex = index-1;
+            while ((leftindex)>=0 && arr[leftindex]>temp){
+                arr[leftindex+1]=arr[leftindex];
+                leftindex--;
+            }
+            arr[leftindex+1]=temp;
+        }
+
+
 
 
     }
